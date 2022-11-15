@@ -1,12 +1,31 @@
 package com.example.movie.model;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "user")
 public class User {
+    @Column(name = "title")
     private String name;
+    @Column(name = "title")
     private int phoneNumber;
+    @Column(name = "userType")
     private String userType;
+    @Column(name = "address")
     private String address;
-    private String userName;
+    @Id
+    private String userId;
+
+    @Column(name = "password")
     private String password;
+
+    public User(String name, int phoneNumber, String userType, String address, String userId, String password) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.userType = userType;
+        this.address = address;
+        this.userId = userId;
+        this.password = password;
+    }
 
     public String getName() {
         return name;
@@ -40,12 +59,12 @@ public class User {
         this.address = address;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getPassword() {
@@ -54,5 +73,17 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", phoneNumber=" + phoneNumber +
+                ", userType='" + userType + '\'' +
+                ", address='" + address + '\'' +
+                ", userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
