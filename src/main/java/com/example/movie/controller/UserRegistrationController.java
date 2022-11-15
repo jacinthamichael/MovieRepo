@@ -1,7 +1,7 @@
 package com.example.movie.controller;
 
 
-import com.example.movie.model.User;
+import com.example.movie.model.UserInfo;
 import com.example.movie.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,9 +20,9 @@ public class UserRegistrationController {
     UserRepository userRepository;
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers(){
+    public ResponseEntity<List<UserInfo>> getAllUsers(){
         try{
-            List<User> userList = new ArrayList<>();
+            List<UserInfo> userList = new ArrayList<>();
             userList = userRepository.findAll();
             return new ResponseEntity<>(userList, HttpStatus.OK);
         }catch(Exception e){
@@ -31,8 +31,8 @@ public class UserRegistrationController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
-        Optional<User> userData = userRepository.findById(id);
+    public ResponseEntity<UserInfo> getUserById(@PathVariable("id") long id) {
+        Optional<UserInfo> userData = userRepository.findById(id);
 
         if (userData.isPresent()) {
             return new ResponseEntity<>(userData.get(), HttpStatus.OK);
@@ -42,10 +42,10 @@ public class UserRegistrationController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<UserInfo> createUser(@RequestBody UserInfo user) {
         try {
-            User selectedUser = (User) userRepository
-                    .save(new User(user.getName(), user.getPhoneNumber(), user.getUserType(), user.getAddress(), user.getUserId(), user.getPassword()));
+            UserInfo selectedUser = (UserInfo) userRepository
+                    .save(new UserInfo(user.getName(), user.getPhoneNumber(), user.getUserType(), user.getAddress(), user.getId(), user.getPassword()));
             return new ResponseEntity<>(selectedUser, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -53,16 +53,16 @@ public class UserRegistrationController {
     }
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
-        Optional<User> userData = userRepository.findById(id);
+    public ResponseEntity<UserInfo> updateUser(@PathVariable("id") long id, @RequestBody UserInfo user) {
+        Optional<UserInfo> userData = userRepository.findById(id);
 
         if (userData.isPresent()) {
-            User selectedUser = userData.get();
+            UserInfo selectedUser = userData.get();
             selectedUser.setName(user.getName());
             selectedUser.setPhoneNumber(user.getPhoneNumber());
             selectedUser.setUserType(user.getUserType());
             selectedUser.setAddress(user.getAddress());
-            selectedUser.setUserId(user.getUserId());
+            selectedUser.setId(user.getId());
             selectedUser.setPassword(user.getPassword());
 
             return new ResponseEntity<>(userRepository.save(selectedUser), HttpStatus.OK);
